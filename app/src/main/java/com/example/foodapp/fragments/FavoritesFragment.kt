@@ -56,7 +56,7 @@ class FavoritesFragment : Fragment() {
                 val meal = favoritesAdapter.differ.currentList[position]
                 viewModel.deleteMeal(meal)
 
-                Snackbar.make(view, "Upiješno obrisano", Snackbar.LENGTH_LONG).apply {
+                Snackbar.make(view, "Upiješno obrisano!!!", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
                         viewModel.insertUpdateMeal(meal)
                     }
