@@ -1,6 +1,7 @@
 package com.example.foodapp.fragments
 
 import android.app.ProgressDialog.show
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.foodapp.activity.MainActivity
+import com.example.foodapp.activity.MealActivtiy
+import com.example.foodapp.adapters.CateogoriesMealsAdapters
 import com.example.foodapp.adapters.MealsAdapters
 import com.example.foodapp.databinding.FragmentFavoritesBinding
 import com.example.foodapp.viewmodel.HomeViewModel
@@ -41,6 +44,8 @@ class FavoritesFragment : Fragment() {
 
         prepareRecyclerView()
         observeFavorites()
+        onFavoritesItemClick()
+
         val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
@@ -84,4 +89,15 @@ class FavoritesFragment : Fragment() {
         favoritesAdapter.differ.submitList(meals)
         })
     }
+
+    private fun onFavoritesItemClick() {
+        favoritesAdapter.setOnFavoritesItemClick {meal ->
+            val intent = Intent(activity, MealActivtiy::class.java)
+            intent.putExtra(HomeFragment.MEAL_ID, meal.idMeal)
+            intent.putExtra(HomeFragment.MEAL_NAME, meal.strMeal)
+            intent.putExtra(HomeFragment.MEAL_THUMB, meal.strMealThumb)
+            startActivity(intent)
+        }
+    }
+
 }

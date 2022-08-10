@@ -1,5 +1,6 @@
 package com.example.foodapp.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.foodapp.adapters.CateogoriesMealsAdapters
 import com.example.foodapp.databinding.ActivityCategoryMealsBinding
 import com.example.foodapp.fragments.HomeFragment
+import com.example.foodapp.pojo.Meal
+import com.example.foodapp.pojo.MealsByCategory
 import com.example.foodapp.viewmodel.CategoriesMealsViewModel
 
 
@@ -17,6 +20,8 @@ class CategoryMealsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategoryMealsBinding
     private lateinit var categoryMealMVVM: CategoriesMealsViewModel
     private lateinit var categoryMealsAdapters: CateogoriesMealsAdapters
+    private lateinit var meal: MealsByCategory
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +30,7 @@ class CategoryMealsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         prepareRecyclerView()
+        onCategoryItemClick()
 
         categoryMealMVVM = ViewModelProviders.of(this)[CategoriesMealsViewModel::class.java]
 
@@ -33,6 +39,7 @@ class CategoryMealsActivity : AppCompatActivity() {
         categoryMealMVVM.observeCategoriesMealsLiveData().observe(this, Observer { mealList ->
         categoryMealsAdapters.setMealList(mealList)
             binding.tvCategoryCount.text = "Ima ukupno " + mealList.size.toString() + " obroka"
+
 
 
 
@@ -48,4 +55,15 @@ class CategoryMealsActivity : AppCompatActivity() {
             adapter = categoryMealsAdapters
         }
     }
+
+    private fun onCategoryItemClick() {
+        categoryMealsAdapters.onItemClick = {meal ->
+            val intent = Intent(this, MealActivtiy::class.java)
+            intent.putExtra(HomeFragment.MEAL_ID, meal.idMeal)
+            intent.putExtra(HomeFragment.MEAL_NAME, meal.strMeal)
+            intent.putExtra(HomeFragment.MEAL_THUMB, meal.strMealThumb)
+            startActivity(intent)
+        }
+    }
+
 }
